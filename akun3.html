@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.belum {
+            color: green;
+        }
+
+        a.sudah {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Daftar Link Facebook</h1>
+
+<ul id="linkList"></ul>
+
+<script>
+    const links = [
+        "https://www.facebook.com/groups/553815878020170/buy_sell_discussion",
+        "https://www.facebook.com/groups/1555364204778064/buy_sell_discussion/",
+        "https://www.facebook.com/groups/eksmadiun/buy_sell_discussion",
+        "https://www.facebook.com/groups/fjb.madiun.new",
+        "https://www.facebook.com/groups/1297900247227735",
+        "https://www.facebook.com/groups/1522563978000287/buy_sell_discussion",
+        "https://www.facebook.com/groups/1123248414458055",
+        "https://www.facebook.com/groups/1494489857431925/buy_sell_discussion",
+        "https://www.facebook.com/groups/655243929383434",
+        "https://www.facebook.com/groups/2278368475734080/"
+    ];
+
+    const STORAGE_KEY = "clickedLinks";
+    const RESET_KEY = "lastReset";
+
+    function shouldReset() {
+        const now = new Date();
+        const lastReset = localStorage.getItem(RESET_KEY);
+
+        if (!lastReset) return true;
+
+        const last = new Date(lastReset);
+
+        if (
+            now.getDate() !== last.getDate() &&
+            now.getHours() >= 19
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function resetIfNeeded() {
+        if (shouldReset()) {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.setItem(RESET_KEY, new Date().toISOString());
+        }
+    }
+
+    function getClickedLinks() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }
+
+    function saveClickedLinks(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function renderLinks() {
+        const ul = document.getElementById("linkList");
+        ul.innerHTML = "";
+
+        const clicked = getClickedLinks();
+
+        links.forEach((url, index) => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+
+            a.href = url;
+            a.target = "_blank";
+            a.textContent = `Link ${index + 1}`;
+            a.className = clicked.includes(url) ? "sudah" : "belum";
+
+            a.addEventListener("click", () => {
+                if (!clicked.includes(url)) {
+                    clicked.push(url);
+                    saveClickedLinks(clicked);
+                }
+                a.className = "sudah";
+            });
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+    }
+
+    resetIfNeeded();
+    renderLinks();
+</script>
+
+</body>
+</html>

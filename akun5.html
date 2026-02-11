@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Link</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Belum diklik */
+        a.belum {
+            color: green;
+        }
+
+        /* Sudah diklik */
+        a.sudah {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Daftar Link Facebook</h1>
+
+<!-- Tombol Reset Manual -->
+<button onclick="resetManual()">Reset Warna</button>
+
+<ul id="linkList"></ul>
+
+<script>
+    const links = [
+       "https://www.facebook.com/groups/1359327897901142/",
+        "https://www.facebook.com/groups/infolokerngawi/",
+        "https://www.facebook.com/groups/1061185788080004/",
+        "https://www.facebook.com/groups/283232064582002/",
+        "https://www.facebook.com/groups/777026182464465/",        
+        "https://www.facebook.com/groups/510685429473193/"
+    ];
+
+    const STORAGE_KEY = "clickedLinks";
+
+    function getClickedLinks() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }
+
+    function saveClickedLinks(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function resetManual() {
+        localStorage.removeItem(STORAGE_KEY);
+        renderLinks();
+    }
+
+    function renderLinks() {
+        const ul = document.getElementById("linkList");
+        ul.innerHTML = "";
+
+        const clicked = getClickedLinks();
+
+        links.forEach((url, index) => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+
+            a.href = url;
+            a.target = "_blank";
+            a.textContent = `Link ${index + 1}`;
+
+            // Set warna berdasarkan status
+            if (clicked.includes(url)) {
+                a.className = "sudah";
+            } else {
+                a.className = "belum";
+            }
+
+            // Saat link diklik
+            a.addEventListener("click", () => {
+                if (!clicked.includes(url)) {
+                    clicked.push(url);
+                    saveClickedLinks(clicked);
+                }
+                a.className = "sudah";
+            });
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+    }
+
+    // Render pertama kali
+    renderLinks();
+</script>
+
+</body>
+</html>

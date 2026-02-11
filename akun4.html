@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Daftar Link</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,6 +13,13 @@
 
         h1 {
             margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
         ul {
@@ -28,10 +36,12 @@
             font-weight: bold;
         }
 
+        /* Belum diklik */
         a.belum {
             color: green;
         }
 
+        /* Sudah diklik */
         a.sudah {
             color: red;
         }
@@ -41,11 +51,14 @@
 
 <h1>Daftar Link Facebook</h1>
 
+<!-- Tombol Reset Manual -->
+<button onclick="resetManual()">Reset Warna</button>
+
 <ul id="linkList"></ul>
 
 <script>
     const links = [
-        "https://www.facebook.com/groups/346017835608327/",
+       "https://www.facebook.com/groups/346017835608327/",
         "https://www.facebook.com/groups/1416639485216046/",
         "https://www.facebook.com/groups/692182390856901/",
         "https://www.facebook.com/groups/1682750958649748/",
@@ -58,23 +71,6 @@
     ];
 
     const STORAGE_KEY = "clickedLinks";
-    const RESET_KEY = "lastReset";
-
-    function shouldReset() {
-        const now = new Date();
-        const lastReset = localStorage.getItem(RESET_KEY);
-        if (!lastReset) return true;
-
-        const last = new Date(lastReset);
-        return now.getDate() !== last.getDate() && now.getHours() >= 19;
-    }
-
-    function resetIfNeeded() {
-        if (shouldReset()) {
-            localStorage.removeItem(STORAGE_KEY);
-            localStorage.setItem(RESET_KEY, new Date().toISOString());
-        }
-    }
 
     function getClickedLinks() {
         return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -82,6 +78,11 @@
 
     function saveClickedLinks(data) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function resetManual() {
+        localStorage.removeItem(STORAGE_KEY);
+        renderLinks();
     }
 
     function renderLinks() {
@@ -97,8 +98,15 @@
             a.href = url;
             a.target = "_blank";
             a.textContent = `Link ${index + 1}`;
-            a.className = clicked.includes(url) ? "sudah" : "belum";
 
+            // Set warna berdasarkan status
+            if (clicked.includes(url)) {
+                a.className = "sudah";
+            } else {
+                a.className = "belum";
+            }
+
+            // Saat link diklik
             a.addEventListener("click", () => {
                 if (!clicked.includes(url)) {
                     clicked.push(url);
@@ -112,7 +120,7 @@
         });
     }
 
-    resetIfNeeded();
+    // Render pertama kali
     renderLinks();
 </script>
 

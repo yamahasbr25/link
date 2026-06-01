@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Link Facebook Group</title>
+
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --success-bg: #DEF7EC;
+            --success-text: #03543F;
+            --success-border: #A4E5C0;
+            --danger-bg: #FDE8E8;
+            --danger-text: #9B1C1C;
+            --danger-border: #F8B4B4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--text-main);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .category-title {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+            border-left: 4px solid var(--primary-color);
+            padding-left: 12px;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .link-item a {
+            display: block;
+            padding: 14px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid #E5E7EB;
+            transition: all 0.2s ease;
+        }
+
+        .url-id {
+            display: block;
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 400;
+            opacity: 0.85;
+            word-break: break-all;
+        }
+
+        /* Status: Belum diklik (Hijau) */
+        .link-item a.belum {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-color: var(--success-border);
+        }
+
+        .link-item a.belum:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(3, 84, 63, 0.1);
+        }
+
+        /* Status: Sudah diklik (Merah) */
+        .link-item a.sudah {
+            background-color: var(--danger-bg);
+            color: var(--danger-text);
+            border-color: var(--danger-border);
+            opacity: 0.8;
+        }
+
+        .link-item a.sudah:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(155, 28, 28, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Daftar Grup Facebook</h1>
+        <button onclick="resetManual()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+            Reset Warna
+        </button>
+    </div>
+
+    <div id="linkContainer"></div>
+</div>
+
+<script>
+    // Data link dipisah menjadi kategori agar lebih rapi di tampilan
+    const groupedLinks = {
+        "Kategori Global / Umum": [
+            "https://www.facebook.com/groups/119317844587118/",
+            "https://www.facebook.com/groups/603199835334992/",
+            "https://www.facebook.com/groups/healthylivingus/",
+            "https://www.facebook.com/groups/253795764177453/",
+            "https://www.facebook.com/groups/27222822517347868/",
+            "https://www.facebook.com/groups/9800333396705924/",
+            "https://www.facebook.com/groups/sidehustleideascommunity/",
+            "https://www.facebook.com/groups/buysellaroundnewyork/",
+            "https://www.facebook.com/groups/1626300834802344/",
+            "https://www.facebook.com/groups/losangelesbuyselltradenew/",
+            "https://www.facebook.com/groups/nycapartmentsforrentonly/",
+            "https://www.facebook.com/groups/houstondallastexas/",
+            "https://www.facebook.com/groups/chicagoillinoisbuysellandtrade/",
+            "https://www.facebook.com/groups/philadelphiahousingroomsapartmentssublets/",
+            "https://www.facebook.com/groups/miamifloridasalebuy/",
+            "https://www.facebook.com/groups/buyselltradehoustondallastexas/",
+            "https://www.facebook.com/groups/buyandsellinchicagonew/",
+            "https://www.facebook.com/groups/jobsforsaleforrentinarizonaaz/",
+            "https://www.facebook.com/groups/203541896008701/",
+            "https://www.facebook.com/groups/816479870132056/",
+            "https://www.facebook.com/groups/814552120131412/",
+            "https://www.facebook.com/groups/kdramasrecommendations/",
+            "https://www.facebook.com/groups/kdramasnews/",
+            "https://www.facebook.com/groups/diywoodideas/",
+            "https://www.facebook.com/groups/4048916702086134/",
+            "https://www.facebook.com/groups/1969484856777835/",
+            "https://www.facebook.com/groups/americansportnews/",
+            "https://www.facebook.com/groups/1333541661492767/",
+            "https://www.facebook.com/groups/kdramasclub/",
+            "https://www.facebook.com/groups/1321088475734540/",
+            "https://www.facebook.com/groups/pittsburghsteelersclub/",
+            "https://www.facebook.com/groups/germanyjobangebot/",
+            "https://www.facebook.com/groups/getjobsinsydney/",
+            "https://www.facebook.com/groups/newenglandpatriotsclub/",
+            "https://www.facebook.com/groups/movienetflixrecommendations/",
+            "https://www.facebook.com/groups/dallascowboysclub/",
+            "https://www.facebook.com/groups/losangelesjobsoffer/",
+            "https://www.facebook.com/groups/358406443825613/",
+            "https://www.facebook.com/groups/348828214230340/",
+            "https://www.facebook.com/groups/285968371170489/"
+        ],
+        "Kategori Indo": [
+            "https://www.facebook.com/groups/infokulinermadiun/",
+            "https://www.facebook.com/groups/1542393107459992/",
+            "https://www.facebook.com/groups/1006426801775599/",
+            "https://www.facebook.com/groups/rekomendasioutfitshopee/",
+            "https://www.facebook.com/groups/inspirasiootdbyshopee/",
+            "https://www.facebook.com/groups/jualbelibarangtangerangbsd/",
+            "https://www.facebook.com/groups/jualbelijabodetabeksekitar/",
+            "https://www.facebook.com/groups/1621668621956853/",
+            "https://www.facebook.com/groups/jualbelimadiunraya/",
+            "https://www.facebook.com/groups/jualbelingawiraya/",
+            "https://www.facebook.com/groups/940467014652095/",
+            "https://www.facebook.com/groups/komunitasfrozenfood/",
+            "https://www.facebook.com/groups/jualbelimadiunponorogomagetanngawi/",
+            "https://www.facebook.com/groups/jualbelikerjasurabayasidoarjogresik/",
+            "https://www.facebook.com/groups/ideoutfitkekinian/",
+            "https://www.facebook.com/groups/174259725917583/",
+            "https://www.facebook.com/groups/1149188386916458/",
+            "https://www.facebook.com/groups/inspirasioutfitkekinianviral/",
+            "https://www.facebook.com/groups/508897815566426/",
+            "https://www.facebook.com/groups/1338053180661801/",
+            "https://www.facebook.com/groups/1337967173583705/",
+            "https://www.facebook.com/groups/airdropindonesialink/",
+            "https://www.facebook.com/groups/864186475114405/",
+            "https://www.facebook.com/groups/255801894060685/",
+            "https://www.facebook.com/groups/netizenplus62/"
+        ]
+    };
+
+    const STORAGE_KEY = "clickedLinks";
+
+    function getClickedLinks() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }
+
+    function saveClickedLinks(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function resetManual() {
+        // Menambahkan alert konfirmasi agar tidak tidak sengaja terhapus
+        if(confirm("Apakah Anda yakin ingin mereset semua status klik?")) {
+            localStorage.removeItem(STORAGE_KEY);
+            renderLinks();
+        }
+    }
+
+    function renderLinks() {
+        const container = document.getElementById("linkContainer");
+        container.innerHTML = ""; // Bersihkan isi sebelumnya
+
+        const clicked = getClickedLinks();
+
+        // Loop melalui setiap kategori
+        for (const [categoryName, links] of Object.entries(groupedLinks)) {
+            
+            // Buat Judul Kategori
+            const title = document.createElement("h2");
+            title.className = "category-title";
+            title.textContent = categoryName;
+            container.appendChild(title);
+
+            // Buat Grid List
+            const ul = document.createElement("ul");
+            ul.className = "link-grid";
+
+            // Loop melalui link di dalam kategori
+            links.forEach((url, index) => {
+                const li = document.createElement("li");
+                li.className = "link-item";
+                
+                const a = document.createElement("a");
+                a.href = url;
+                a.target = "_blank";
+
+                // Mengekstrak ID atau nama grup untuk ditampilkan lebih rapi di bawah teks utama
+                let displayName = url.replace("https://www.facebook.com/groups/", "").replace(/\//g, "");
+
+                a.innerHTML = `Grup ${index + 1} <span class="url-id">${displayName}</span>`;
+
+                // Set warna berdasarkan status (hijau jika belum, merah jika sudah)
+                if (clicked.includes(url)) {
+                    a.className = "sudah";
+                } else {
+                    a.className = "belum";
+                }
+
+                // Saat link diklik
+                a.addEventListener("click", () => {
+                    if (!clicked.includes(url)) {
+                        clicked.push(url);
+                        saveClickedLinks(clicked);
+                    }
+                    a.className = "sudah";
+                });
+
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+
+            container.appendChild(ul);
+        }
+    }
+
+    // Render pertama kali saat halaman dimuat
+    renderLinks();
+</script>
+
+</body>
+</html>
